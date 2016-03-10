@@ -19,10 +19,8 @@ router.get('/', function(req, res, next){
         var workbook = xlsx.readFile('semester-info.xlsx');
         var sheets = workbook.SheetNames;
         var exceldict = {};
-        var courses = [];
 
         sheets.forEach(function(y){
-            var worksheet = workbook.Sheets[y];
             var worksheet = workbook.Sheets[y];
             var headers = {};
             var data = [];
@@ -49,55 +47,63 @@ router.get('/', function(req, res, next){
         });
 
         var course_lecturer_mapping = exceldict['Course-Lecturer Mapping'];
+
         var lecturers = exceldict['Lecturers'];
         var students = exceldict['Students'];
         var enrolled_students = exceldict['Student-Course Mapping'];
-
+        var courses = [];
 
         for (course in course_lecturer_mapping){
-            var singleCourse = {};
-            singleCourse['id'] = "1234";
-            singleCourse['title'] = course['Course Title [String]'];
-            singleCourse['code'] = course['Course No [Number]'];
-            singleCourse['class'] = course['Room [String]'];
-            singleCourse['semester'] = course['Semester [String]'];
-            singleCourse['time'] = course['Time [String]'];
-            var CLID = course['CLID [Number]'];
-            var course_lecturer_code = course['Lecturer Code [INT]'];
-
+            var cour = {};
+            console.log(course);
+            cour['id'] = "1234";
+            cour['title'] = course_lecturer_mapping[course]['Course Title [String]'];
+            cour['code'] = course_lecturer_mapping[course]['Course No [Number]'];
+            cour['class'] = course_lecturer_mapping[course]['Room [String]'];
+            cour['semester'] = course_lecturer_mapping[course]['Semester [String]'];
+            cour['time'] = course_lecturer_mapping[course]['Time [String]'];
+            var CLID = course_lecturer_mapping[course]['CLID [Number]'];
+            var course_lecturer_code = course_lecturer_mapping[course]['Lecturer Code [INT]'];
+            //console.log(course_lecturer_code);
 
             for (l in lecturers) {
-                if (l['Lecturer Code [INT]'] == course_lecturer_code){
+                if (lecturers[l]['Lecturer Code [INT]'] == course_lecturer_code){
                     var lecturer_dict = {};
-                    lecturer_dict['name'] = l['Name [String]'];
+                    lecturer_dict['name'] = lecturers[l]['Name [String]'];
                     lecturer_dict['imageUrl'] = '/src/app/components/assets/images/avatar-1-big.jpg';
                     lecturer_dict['email'] = 'template@template.com';
-                    lecturer_dict['password'] = l['Plain Password [String]'];
-                    lecturer_dict['birthday'] = l['Birth Date [Date]'];
-                    singleCourse['professor']['user'] = lecturer_dict;
+                    lecturer_dict['password'] = lecturers[l]['Plain Password [String]'];
+                    lecturer_dict['birthday'] = lecturers[l]['Birth Date [Date]'];
+                    cour['professor'] = {"user" : lecturer_dict};
                 }
             }
-            singleCourse['students'] = [];
+            cour['students'] = [];
 
             for (s in enrolled_students){
-                if (s['CLID [Number]'] == CLID){
-                    var std_id = s['StudentId [Number]'];
+                if (enrolled_students[s]['CLID [Number]'] == CLID){
+                    var std_id = enrolled_students[s]['StudentId [Number]'];
                     for (std in students){
-                        if (std['Student No. [Number]'] == std_id){
+                        if (students[std]['Student No. [Number]'] == std_id){
                             var student_desc = {};
-                            student_desc['name'] = std['Name [String]'];
-                            student_desc['password'] = std['Plain Password [String]'];
-                            student_desc['birthday'] = std['Birth Date [Date]'];
+                            student_desc['name'] = students[std]['Name [String]'];
+                            student_desc['password'] = students[std]['Plain Password [String]'];
+                            student_desc['birthday'] = students[std]['Birth Date [Date]'];
                             student_desc['imgUrl'] = "http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg";
-                            singleCourse['students'].push({'user' : student_desc});
+
+                            var student_user = {"user" : student_desc};
+                            console.log(student_user);
+                            cour['students'].push(student_user);
                         }
                     }
                 }
             }
-
+            //console.log(cour);
+            courses.push(cour);
         }
+        //JSON.stringify(courses);
+        res.json(cour);
     });
-    res.send("hi");
+
 });
 
 module.exports = router;
