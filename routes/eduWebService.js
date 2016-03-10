@@ -16,7 +16,6 @@ router.get('/', function(req, res, next){
             console.log('Sent');
         }
     });
-    res.send('you must receive an excel file');
 });
 
 module.exports = router;
