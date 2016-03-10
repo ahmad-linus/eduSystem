@@ -12,6 +12,8 @@ var init = require('./routes/init');
 var eduSystem = require('./routes/eduWebService');
 var excelparser = require('./routes/excelparser');
 var app = express();
+var cors = require('cors');
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
