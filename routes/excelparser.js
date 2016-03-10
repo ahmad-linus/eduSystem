@@ -47,10 +47,12 @@ router.get('/', function(req, res, next){
                 data.shift();
                 exceldict[y] = data;
         });
-        
+
         var course_lecturer_mapping = exceldict['Course-Lecturer Mapping'];
         var lecturers = exceldict['Lecturers'];
         var students = exceldict['Students'];
+        var enrolled_students = exceldict['Student-Course Mapping'];
+
 
         for (course in course_lecturer_mapping){
             var singleCourse = {};
@@ -60,7 +62,38 @@ router.get('/', function(req, res, next){
             singleCourse['class'] = course['Room [String]'];
             singleCourse['semester'] = course['Semester [String]'];
             singleCourse['time'] = course['Time [String]'];
-            var lecturer = course['Lecturer Code [INT]'];
+            var CLID = course['CLID [Number]'];
+            var course_lecturer_code = course['Lecturer Code [INT]'];
+
+
+            for (l in lecturers) {
+                if (l['Lecturer Code [INT]'] == course_lecturer_code){
+                    var lecturer_dict = {};
+                    lecturer_dict['name'] = l['Name [String]'];
+                    lecturer_dict['imageUrl'] = '/src/app/components/assets/images/avatar-1-big.jpg';
+                    lecturer_dict['email'] = 'template@template.com';
+                    lecturer_dict['password'] = l['Plain Password [String]'];
+                    lecturer_dict['birthday'] = l['Birth Date [Date]'];
+                    singleCourse['professor']['user'] = lecturer_dict;
+                }
+            }
+            singleCourse['students'] = [];
+
+            for (s in enrolled_students){
+                if (s['CLID [Number]'] == CLID){
+                    var std_id = s['StudentId [Number]'];
+                    for (std in students){
+                        if (std['Student No. [Number]'] == std_id){
+                            var student_desc = {};
+                            student_desc['name'] = std['Name [String]'];
+                            student_desc['password'] = std['Plain Password [String]'];
+                            student_desc['birthday'] = std['Birth Date [Date]'];
+                            student_desc['imgUrl'] = "http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg";
+                            singleCourse['students'].push({'user' : student_desc});
+                        }
+                    }
+                }
+            }
 
         }
     });
