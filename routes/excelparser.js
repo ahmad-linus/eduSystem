@@ -19,33 +19,44 @@ router.get('/', function(req, res, next){
         var workbook = xlsx.readFile('semester-info.xlsx');
         var sheets = workbook.SheetNames;
 
-        sheets.forEach(function(sheet_name){
-            var worksheet = workbook.Sheets[sheet_name];
-            if (sheet_name === "Students" ){
-                var cells_list = ['A', 'B', 'C', 'D', 'E'];
-                var counter = 0;
-                var student_list = [];
-                for (w in worksheet){
-                    var students = [];
-                    if (row === '!')
+        sheets.forEach(function(y){
+            var worksheet = workbook.Sheets[y];
+            if (y === "Students" ){
+                var worksheet = workbook.Sheets[y];
+                var headers = {};
+                var data = [];
+                for(z in worksheet) {
+                    if(z[0] === '!') continue;
+                    //parse out the column, row, and value
+                    var col = z.substring(0,1);
+                    var row = parseInt(z.substring(1));
+                    var value = worksheet[z].v;
+
+                    //store header names
+                    if(row == 1) {
+                        headers[col] = value;
                         continue;
-                    if (counter >= 1){
-                        students.push(worksheet[w].v);
                     }
-                    counter++;
+
+                    if(!data[row]) data[row]={};
+                    data[row][headers[col]] = value;
                 }
+                //drop those first two rows which are empty
+                data.shift();
+                data.shift();
+                console.log(data);
             }
 
-            if (sheet_name === "Lecturers"){
-                console.log(sheet_name);
+            if (y === "Lecturers"){
+                //console.log(sheet_name);
             }
 
-            if (sheet_name === "Course-Lecturer Mapping"){
-                console.log(sheet_name);
+            if (y === "Course-Lecturer Mapping"){
+                //console.log(sheet_name);
             }
 
-            if (sheet_name === "Student-Course Mapping"){
-                console.log(sheet_name);
+            if (y === "Student-Course Mapping"){
+                //console.log(sheet_name);
             }
 
         });
