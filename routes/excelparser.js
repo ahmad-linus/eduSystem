@@ -18,15 +18,16 @@ router.get('/', function(req, res, next){
     stream.on('finish', function(){
         var workbook = xlsx.readFile('semester-info.xlsx');
         var sheets = workbook.SheetNames;
+        var exceldict = {};
+        var courses = [];
 
         sheets.forEach(function(y){
             var worksheet = workbook.Sheets[y];
-            if (y === "Students" ){
-                var worksheet = workbook.Sheets[y];
-                var headers = {};
-                var data = [];
-                for(z in worksheet) {
-                    if(z[0] === '!') continue;
+            var worksheet = workbook.Sheets[y];
+            var headers = {};
+            var data = [];
+            for(z in worksheet) {
+                if(z[0] === '!') continue;
                     //parse out the column, row, and value
                     var col = z.substring(0,1);
                     var row = parseInt(z.substring(1));
@@ -44,22 +45,24 @@ router.get('/', function(req, res, next){
                 //drop those first two rows which are empty
                 data.shift();
                 data.shift();
-                console.log(data);
-            }
-
-            if (y === "Lecturers"){
-                //console.log(sheet_name);
-            }
-
-            if (y === "Course-Lecturer Mapping"){
-                //console.log(sheet_name);
-            }
-
-            if (y === "Student-Course Mapping"){
-                //console.log(sheet_name);
-            }
-
+                exceldict[y] = data;
         });
+        
+        var course_lecturer_mapping = exceldict['Course-Lecturer Mapping'];
+        var lecturers = exceldict['Lecturers'];
+        var students = exceldict['Students'];
+
+        for (course in course_lecturer_mapping){
+            var singleCourse = {};
+            singleCourse['id'] = "1234";
+            singleCourse['title'] = course['Course Title [String]'];
+            singleCourse['code'] = course['Course No [Number]'];
+            singleCourse['class'] = course['Room [String]'];
+            singleCourse['semester'] = course['Semester [String]'];
+            singleCourse['time'] = course['Time [String]'];
+            var lecturer = course['Lecturer Code [INT]'];
+
+        }
     });
     res.send("hi");
 });
