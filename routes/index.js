@@ -3,7 +3,7 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectID = require('mongodb').ObjectID;
-
+var fileStream = require('fs');
 
 var url = 'mongodb://localhost:27017/test';
 MongoClient.connect(url, function(err, db) {
@@ -15,6 +15,11 @@ MongoClient.connect(url, function(err, db) {
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+router.get('/edu', function(req, res, next){
+  res.render('index', {title: 'EDU'});
+  console.log('edu server reached');
 });
 
 var insert = function (db, callback) {
@@ -32,6 +37,5 @@ MongoClient.connect(url, function(err, db){
     db.close();
   });
 });
-
 
 module.exports = router;
