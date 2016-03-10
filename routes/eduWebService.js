@@ -6,7 +6,7 @@ var router = express.Router();
 var path = require('path');
 
 router.get('/', function(req, res, next){
-    console.log(path.join(__dirname, '../public/spreadsheets/', 'edu-sample-excel-v3.0.xlsx'));
+    console.log(path.join(__dirname, '../public/spreadsheets/', 'excel.xlsx'));
     res.sendFile(path.resolve(path.join(__dirname, '../public/spreadsheets/', 'excel.xlsx')), function (err) {
         if (err) {
             console.log(err);
@@ -16,7 +16,7 @@ router.get('/', function(req, res, next){
             console.log('Sent');
         }
     });
-    res.send('you must receive an excel file');
+    //res.send('you must receive an excel file');
 });
 
 module.exports = router;
