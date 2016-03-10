@@ -17,11 +17,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/edu', function(req, res, next){
-  res.render('index', {title: 'EDU'});
-  console.log('edu server reached');
-});
-
 var insert = function (db, callback) {
   db.collection('names').insertOne(
       {"name" : 124}
