@@ -55,6 +55,7 @@ router.get('/', function(req, res, next){
 
         for (course in course_lecturer_mapping){
             var cour = {};
+
             console.log(course);
             cour['id'] = "1234";
             cour['title'] = course_lecturer_mapping[course]['Course Title [String]'];
@@ -62,11 +63,12 @@ router.get('/', function(req, res, next){
             cour['class'] = course_lecturer_mapping[course]['Room [String]'];
             cour['semester'] = course_lecturer_mapping[course]['Semester [String]'];
             cour['time'] = course_lecturer_mapping[course]['Time [String]'];
-            cour['finalExamtime'] = course_lecturer_mapping[course]['Final Exam Time [DateTime]'];
+            //cour['finalExamtime'] = course_lecturer_mapping[course]['Final Exam Time [DateTime]'];
             cour['groupId'] = course_lecturer_mapping[course]['GroupId [Number]'];
             cour['deptNo'] = course_lecturer_mapping[course]['Department No [INT]'];
-
-
+            var exams = [{"type" : "final",
+                "recordDateTime" : course_lecturer_mapping[course]['Final Exam Time [DateTime]']}];
+            cour['exams'] = exams;
             var CLID = course_lecturer_mapping[course]['CLID [Number]'];
             var course_lecturer_code = course_lecturer_mapping[course]['Lecturer Code [INT]'];
             //console.log(course_lecturer_code);
