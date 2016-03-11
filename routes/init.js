@@ -41,6 +41,7 @@ router.get('/edu/excel', function (req, res, next) {
             "semester": "۹۵-۹۴",
             "time": "شنبه ها و دوشنبه ها ساعت ۷:۳۰ تا ۹:۰۰",
             "class": "دانشکده کامپیوتر ۷۲۴",
+            finalExamTime : "fdafa",
             "students": [
                 {
                     "user": {
