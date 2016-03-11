@@ -80,6 +80,7 @@ router.get('/', function(req, res, next){
                     lecturer_dict['password'] = lecturers[l]['Plain Password [String]'];
                     lecturer_dict['birthday'] = lecturers[l]['Birth Date [Date]'];
                     lecturer_dict['deptNo'] = lecturers[l]['Department No [INT]'];
+                    lecturer_dict['ID'] = lecturers[l]['Lecturer Code [INT'];
                     cour['professor'] = {"user" : lecturer_dict};
                 }
             }
@@ -96,7 +97,7 @@ router.get('/', function(req, res, next){
                             student_desc['birthday'] = students[std]['Birth Date [Date]'];
                             student_desc['imgUrl'] = "http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg";
                             student_desc['deptNo'] = students[std]['Department No [INT]'];
-
+                            student_desc['ID'] = students[std]['student No. [INT]'];
                             var student_user = {"user" : student_desc};
                             console.log(student_user);
                             cour['students'].push(student_user);
@@ -107,7 +108,6 @@ router.get('/', function(req, res, next){
             //console.log(cour);
             courses.push(cour);
         }
-        //JSON.stringify(courses);
         res.json(cour);
     });
 
