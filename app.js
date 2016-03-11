@@ -14,6 +14,8 @@ var excelparser = require('./routes/excelparser');
 var app = express();
 var cors = require('cors');
 var writeService = require('./routes/writeService');
+var reader = require('./routes/readService');
+
 app.use(cors());
 
 // view engine setup
@@ -35,7 +37,7 @@ app.use('/comment', comment);
 app.use('/init', init);
 app.use('/initialize', excelparser);
 app.use('/write', writeService);
-
+app.use('/read', reader);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
