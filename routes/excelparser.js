@@ -66,9 +66,13 @@ router.get('/', function(req, res, next){
             //cour['finalExamtime'] = course_lecturer_mapping[course]['Final Exam Time [DateTime]'];
             cour['groupId'] = course_lecturer_mapping[course]['GroupId [Number]'];
             cour['deptNo'] = course_lecturer_mapping[course]['Department No [INT]'];
-            var exams = [{"type" : "final",
-                "recordDateTime" : course_lecturer_mapping[course]['Final Exam Time [DateTime]']}];
-            cour['exams'] = exams;
+            cour['exams'] = [
+                {
+                    "type" : "پایان ترم",
+                    "datetime" : course_lecturer_mapping[course]['Final Exam Time [DateTime]'],
+                    "title": "پایان ترم"
+                }
+            ];
             var CLID = course_lecturer_mapping[course]['CLID [Number]'];
             var course_lecturer_code = course_lecturer_mapping[course]['Lecturer Code [INT]'];
             //console.log(course_lecturer_code);
