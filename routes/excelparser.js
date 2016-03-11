@@ -108,7 +108,7 @@ router.get('/', function(req, res, next){
             //console.log(cour);
             courses.push(cour);
         }
-        res.json(cour);
+        res.json(courses);
     });
 
 });
