@@ -63,7 +63,6 @@ router.get('/', function(req, res, next){
             cour['class'] = course_lecturer_mapping[course]['Room [String]'];
             cour['semester'] = course_lecturer_mapping[course]['Semester [String]'];
             cour['time'] = course_lecturer_mapping[course]['Time [String]'];
-            //cour['finalExamtime'] = course_lecturer_mapping[course]['Final Exam Time [DateTime]'];
             cour['groupId'] = course_lecturer_mapping[course]['GroupId [Number]'];
             cour['deptNo'] = course_lecturer_mapping[course]['Department No [INT]'];
             var exams = [{"type" : "final",
@@ -76,14 +75,16 @@ router.get('/', function(req, res, next){
             for (l in lecturers) {
                 if (lecturers[l]['Lecturer Code [INT]'] == course_lecturer_code){
                     var lecturer_dict = {};
-                    lecturer_dict['name'] = lecturers[l]['Name [String]'];
-                    lecturer_dict['imageUrl'] = '/src/app/components/assets/images/avatar-1-big.jpg';
-                    lecturer_dict['email'] = 'template@template.com';
-                    lecturer_dict['password'] = lecturers[l]['Plain Password [String]'];
-                    lecturer_dict['birthday'] = lecturers[l]['Birth Date [Date]'];
+                    var user_dict = {};
+                    user_dict['name'] = lecturers[l]['Name [String]'];
+                    user_dict['imageUrl'] = '/src/app/components/assets/images/avatar-1-big.jpg';
+                    user_dict['email'] = 'template@template.com';
+                    user_dict['password'] = lecturers[l]['Plain Password [String]'];
+                    user_dict['birthday'] = lecturers[l]['Birth Date [Date]'];
                     lecturer_dict['deptNo'] = lecturers[l]['Department No [INT]'];
-                    lecturer_dict['ID'] = lecturers[l]['Lecturer Code [INT'];
-                    cour['professor'] = {"user" : lecturer_dict};
+                    lecturer_dict['LecturerID'] = lecturers[l]['Lecturer Code [INT]'];
+                    lecturer_dict['user'] = user_dict;
+                    cour['professor'] = lecturer_dict;
                 }
             }
             cour['students'] = [];
@@ -94,15 +95,16 @@ router.get('/', function(req, res, next){
                     for (std in students){
                         if (students[std]['Student No. [Number]'] == std_id){
                             var student_desc = {};
-                            student_desc['name'] = students[std]['Name [String]'];
-                            student_desc['password'] = students[std]['Plain Password [String]'];
-                            student_desc['birthday'] = students[std]['Birth Date [Date]'];
-                            student_desc['imgUrl'] = "http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg";
+                            var user_dict = {};
+                            user_dict['name'] = students[std]['Name [String]'];
+                            user_dict['password'] = students[std]['Plain Password [String]'];
+                            user_dict['birthday'] = students[std]['Birth Date [Date]'];
+                            user_dict['imgUrl'] = "http://www.keita-gaming.com/assets/profile/default-avatar-c5d8ec086224cb6fc4e395f4ba3018c2.jpg";
                             student_desc['deptNo'] = students[std]['Department No [INT]'];
-                            student_desc['ID'] = students[std]['student No. [INT]'];
-                            var student_user = {"user" : student_desc};
-                            console.log(student_user);
-                            cour['students'].push(student_user);
+                            student_desc['StudentID'] = students[std]['student No. [INT]'];
+                            student_desc['user'] = user_dict;
+                            console.log(student_desc);
+                            cour['students'].push(student_desc);
                         }
                     }
                 }

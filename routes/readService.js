@@ -34,14 +34,28 @@ router.get('/courses/:semester', function(req, res){
         var courses = [];
         cursor.each(function (err, doc) {
             assert.equal(err, null);
-            if (doc != null) {
+            if (doc != null)
                 courses.push(doc);
-            }
         });
 
         res.json(courses);
     }
 });
+
+router.get('/courses/:studentID', function(req, res){
+   var fetchCoursesByStudentID = function(db, callback){
+       var stdId = req.params.studentID;
+       var dbCursor = db.collection('course').find({"students.StudentID" : stdId});
+       var courses = [];
+       cursor.each(function (err, doc){
+          assert.equal(err, null);
+           if (doc != null)
+                courses.push(doc);
+       });
+   }
+});
+
+
 
 
 module.exports = router;
