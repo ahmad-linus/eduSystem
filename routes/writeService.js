@@ -6,7 +6,7 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
-Router.post('/',  function(req, res){
+router.get('/:collection',  function(req, res){
     var url = 'mongodb://localhost:27017/test';
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
@@ -16,8 +16,11 @@ Router.post('/',  function(req, res){
 
 
     var insert = function (db, callback) {
-        db.collection('names').insertOne(
-            {"name" : 124}
+        var collectionName = req.params.collection;
+        var jsonData = req.body.instance;
+
+        db.collection(collectionName).insertOne(
+            jsonData
             , function (err, result) {
                 console.log('inserted a document');
             });
@@ -30,6 +33,8 @@ Router.post('/',  function(req, res){
             db.close();
         });
     });
+
+    res.send("hi");
 });
 
 module.exports = router;
