@@ -72,7 +72,7 @@ router.get('/courses/student/:studentID/semester/:semester', function(req, res){
             queryJSON['semester'] = semester;
 
         console.log(queryJSON);
-        var dbCursor = db.collection('names').find();
+        var dbCursor = db.collection('course').find(queryJSON);
         var courses = [];
 
         dbCursor.each(function(err, doc){
