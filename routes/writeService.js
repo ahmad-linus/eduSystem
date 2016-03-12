@@ -6,12 +6,13 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
-router.get('/:collection',  function(req, res){
+router.get('/:collection', function (req, res, next) {
+
     var url = 'mongodb://localhost:27017/test';
 
     var insert = function (db, callback) {
         var collectionName = req.params.collection;
-        var jsonData = req.body.instance;
+        var jsonData = JSON.parse(req.query.instance);
 
         db.collection(collectionName).insertOne(
             jsonData
@@ -21,9 +22,9 @@ router.get('/:collection',  function(req, res){
     };
 
 
-    MongoClient.connect(url, function(err, db){
+    MongoClient.connect(url, function (err, db) {
         assert.equal(null, err);
-        insert(db, function(){
+        insert(db, function () {
             db.close();
         });
     });

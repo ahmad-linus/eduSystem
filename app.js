@@ -15,6 +15,7 @@ var app = express();
 var cors = require('cors');
 var writeService = require('./routes/writeService');
 var reader = require('./routes/readService');
+var test = require('./routes/test');
 
 app.use(cors());
 
@@ -38,6 +39,7 @@ app.use('/init', init);
 app.use('/initialize', excelparser);
 app.use('/write', writeService);
 app.use('/read', reader);
+app.use('/test', test);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
