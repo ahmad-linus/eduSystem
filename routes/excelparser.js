@@ -57,7 +57,7 @@ router.get('/', function(req, res, next){
             var cour = {};
 
             console.log(course);
-            cour['id'] = "1234";
+            cour['id'] = course_lecturcourse_lecturer_mapper_mapping[course]['CLID [Number]'];
             cour['title'] = course_lecturer_mapping[course]['Course Title [String]'];
             cour['code'] = course_lecturer_mapping[course]['Course No [Number]'];
             cour['class'] = course_lecturer_mapping[course]['Room [String]'];
@@ -72,7 +72,7 @@ router.get('/', function(req, res, next){
                     "title": "پایان ترم"
                 }
             ];
-            var CLID = course_lecturer_mapping[course]['CLID [Number]'];
+            var CLID = course_lecturcourse_lecturer_mapper_mapping[course]['CLID [Number]'];
             var course_lecturer_code = course_lecturer_mapping[course]['Lecturer Code [INT]'];
             //console.log(course_lecturer_code);
 

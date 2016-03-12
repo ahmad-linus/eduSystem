@@ -33,13 +33,15 @@ router.get('/courses/semesters/:semester', function(req, res){
         var semester = req.params.semester;
         var cursor = db.collection('course').find({"semester" : semester});
         var courses = [];
-        console.log(cursor);
+        //console.log(cursor);
         cursor.each(function (err, doc) {
             assert.equal(err, null);
             if (doc != null)
                 courses.push(doc);
+            else {
+                res.json(courses);
+            }
         });
-        res.json(courses);
     };
     dbConnector(fetchCoursesBySemester);
 });
@@ -76,11 +78,11 @@ router.get('/courses/student/:studentID/semester/:semester', function(req, res){
         var courses = [];
 
         dbCursor.each(function(err, doc){
-            assert(err, null);
             if (doc != null)
                 courses.push(doc);
+            else
+                res.json(courses);
         });
-        res.json(courses);
     };
     dbConnector(fetchCoursesByStudentIDAndSemester);
 });
