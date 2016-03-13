@@ -7,6 +7,14 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var readService = require('./readService');
 
+
+var dbConnector = function(func){
+    MongoClient.connect(url, function(err, db){
+        assert.equal(null, err);
+        func(db);
+    });
+};
+
 router.get('/:collection', function (req, res, next) {
 
     var url = 'mongodb://localhost:27017/test';
@@ -21,7 +29,7 @@ router.get('/:collection', function (req, res, next) {
                 console.log('inserted a document');
             });
     };
-    readService.dbConnector(insert);
+    dbConnector(insert);
 
     //MongoClient.connect(url, function (err, db) {
     //    assert.equal(null, err);
@@ -76,7 +84,7 @@ router.get('/:collection', function (req, res, next) {
                 console.log('inserted a document');
             });
     };
-    readService.dbConnector(insert);
+    dbConnector(insert);
 
     //MongoClient.connect(url, function (err, db) {
     //    assert.equal(null, err);
@@ -96,7 +104,7 @@ router.get('/update/:collection/:id', function(req, res){
         db.collection.update({"_id" : objID},
         updatedData);
     };
-    readService.dbConnector(updateDB);
+    dbConnector(updateDB);
 });
 
 
