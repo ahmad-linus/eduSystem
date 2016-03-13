@@ -7,6 +7,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var readService = require('./readService');
 
+var url = 'mongodb://localhost:27017/test';
 
 var dbConnector = function(func){
     MongoClient.connect(url, function(err, db){
@@ -99,12 +100,15 @@ router.get('/:collection', function (req, res, next) {
 router.get('/update/:collection/:id', function(req, res){
     var updateDB = function(db){
         var collectionName = req.params.collection;
-        var updatedData = JSON.parse(req.query.instance);
+        //var updatedData = JSON.parse(req.query.instance);
         var objID = new require('mongodb').ObjectID(req.params.id);
-        db.collection.update({"_id" : objID},
-        updatedData);
+        db.collection(collectionName).update({"_id" : objID},
+            {"test" : 1}, function(res, err){
+                res.send("updated");
+            });
     };
     dbConnector(updateDB);
+
 });
 
 
