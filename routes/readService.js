@@ -87,4 +87,22 @@ router.get('/courses/student/:studentID/semester/:semester', function(req, res){
     dbConnector(fetchCoursesByStudentIDAndSemester);
 });
 
+
+router.get('/courses/search/:token', function(req, res){
+   var token = req.params.token;
+    var search = function(db, callback){
+        var regexToken = ".*" + token + ".*";
+        var cursor = db.collection('course').find({"title" : {"$regex" : regexToken}});
+        var courses = [];
+        cursor.each(function(err, doc){
+           if (doc != null)
+               courses.push(doc);
+            else
+               res.json(courses);
+        });
+    };
+    dbConnector(search);
+});
+
 module.exports = router;
+//module.exports = dbConnector;
